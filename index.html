@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gönül Ev Yemekleri - Hatay Lezzetleri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root { --primary: #667eea; --secondary: #764ba2; --accent: #f093fb; --dark: #1a1a2e; --darker: #16213e; --text: #eaeaea; --text-muted: #a0a0a0; --glass: rgba(255, 255, 255, 0.1); --success: #00d9ff; --warning: #ffd700; --danger: #ff4757; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%); color: var(--text); min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
+        header { position: fixed; top: 0; width: 100%; background: rgba(26, 26, 46, 0.95); backdrop-filter: blur(10px); z-index: 1000; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass); }
+        .logo h1 { font-size: 1.5rem; background: linear-gradient(45deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; }
+        .logo span { font-size: 0.8rem; color: var(--text-muted); display: block; }
+        .header-icons { display: flex; gap: 15px; align-items: center; }
+        .header-icons button { background: var(--glass); border: none; color: var(--text); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; touch-action: manipulation; }
+        .header-icons button:active { transform: scale(0.95); }
+        .header-icons button:hover { background: var(--primary); transform: scale(1.1); }
+        .cart-count { position: absolute; top: -5px; right: -5px; background: var(--accent); color: var(--dark); font-size: 0.7rem; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .cart-btn { position: relative; }
+        .side-menu { position: fixed; left: -100%; top: 0; width: 80%; max-width: 300px; height: 100vh; background: linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%); z-index: 2000; transition: left 0.3s ease; padding: 30px 20px; box-shadow: 5px 0 20px rgba(0,0,0,0.5); overflow-y: auto; }
+        .side-menu.active { left: 0; }
+        .close-menu { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+        .menu-items { margin-top: 60px; display: flex; flex-direction: column; gap: 15px; }
+        .menu-items a { color: var(--text); text-decoration: none; font-size: 1.1rem; padding: 15px; border-radius: 10px; transition: all 0.3s; display: flex; align-items: center; gap: 15px; touch-action: manipulation; }
+        .menu-items a:active { background: var(--glass); }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1500; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .hero { margin-top: 80px; padding: 40px 20px; text-align: center; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-radius: 0 0 30px 30px; }
+        .hero h2 { font-size: 1.8rem; margin-bottom: 15px; background: linear-gradient(45deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: var(--text-muted); margin-bottom: 30px; font-size: 1rem; line-height: 1.6; }
+        .hero-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 15px 30px; border-radius: 25px; border: none; font-size: 1rem; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; font-weight: 600; touch-action: manipulation; }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); }
+        .btn-secondary { background: var(--glass); color: var(--text); border: 2px solid var(--primary); }
+        .categories { padding: 40px 20px; }
+        .section-title { text-align: center; font-size: 1.8rem; margin-bottom: 30px; background: linear-gradient(45deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .category-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 600px; margin: 0 auto; }
+        @media (min-width: 768px) { .category-grid { grid-template-columns: repeat(3, 1fr); max-width: 800px; } }
+        .category-card { background: var(--glass); border-radius: 20px; padding: 25px 15px; text-align: center; cursor: pointer; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.1); touch-action: manipulation; }
+        .category-card:active { transform: scale(0.98); }
+        .category-card:hover { transform: translateY(-5px); background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2)); border-color: var(--primary); }
+        .category-icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .category-card h3 { font-size: 0.9rem; color: var(--text); }
+        .featured { padding: 40px 20px; background: rgba(0,0,0,0.2); }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; }
+        @media (max-width: 640px) { .product-grid { grid-template-columns: 1fr; } }
+        .product-card { background: var(--glass); border-radius: 20px; overflow: hidden; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.1); position: relative; }
+        .product-card:active { transform: scale(0.98); }
+        .product-image { width: 100%; height: 200px; object-fit: cover; background: linear-gradient(45deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; cursor: pointer; overflow: hidden; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; }
+        .favorite-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; z-index: 10; font-size: 1.1rem; touch-action: manipulation; }
+        .favorite-btn:active { transform: scale(0.9); }
+        .favorite-btn.active { background: var(--danger); }
+        .stock-badge { position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.75rem; font-weight: 600; }
+        .stock-badge.low { background: rgba(255, 71, 87, 0.9); }
+        .discount-badge { position: absolute; top: 10px; left: 10px; background: linear-gradient(45deg, #ff4757, #ff6b81); color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: bold; z-index: 10; }
+        .product-info { padding: 20px; }
+        .product-info h3 { font-size: 1.2rem; margin-bottom: 10px; cursor: pointer; }
+        .product-info p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px; line-height: 1.5; }
+        .product-footer { display: flex; justify-content: space-between; align-items: center; }
+        .price-container { display: flex; flex-direction: column; }
+        .old-price { text-decoration: line-through; color: var(--text-muted); font-size: 0.9rem; }
+        .price { font-size: 1.4rem; font-weight: bold; color: var(--success); }
+        .add-to-cart { background: linear-gradient(45deg, var(--primary), var(--secondary)); border: none; color: white; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; touch-action: manipulation; }
+        .add-to-cart:active { transform: scale(0.9); }
+        .add-to-cart:disabled { background: var(--text-muted); cursor: not-allowed; }
+        .product-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 3000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(10px); overflow-y: auto; }
+        .product-modal.active { display: flex; }
+        .modal-content { background: var(--darker); border-radius: 20px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; border: 1px solid var(--glass); position: relative; margin: auto; }
+        .modal-close { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 10; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; touch-action: manipulation; }
+        .modal-image { width: 100%; height: 250px; object-fit: cover; background: linear-gradient(45deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+        .modal-image img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-body { padding: 25px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .modal-category { color: var(--primary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .modal-title { font-size: 1.5rem; margin-bottom: 5px; }
+        .modal-price { font-size: 1.8rem; color: var(--success); font-weight: bold; }
+        .modal-description { color: var(--text-muted); line-height: 1.7; margin-bottom: 20px; font-size: 0.95rem; }
+        .quantity-selector { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .quantity-btn { background: var(--glass); border: none; color: var(--text); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; touch-action: manipulation; }
+        .quantity-btn:active { background: var(--primary); }
+        .quantity-value { font-size: 1.3rem; font-weight: bold; min-width: 40px; text-align: center; }
+        .modal-actions { display: flex; gap: 10px; flex-direction: column; }
+        .btn-modal { width: 100%; padding: 15px; border-radius: 25px; border: none; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 600; touch-action: manipulation; }
+        .btn-modal:active { transform: scale(0.98); }
+        .btn-add-cart { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; }
+        .btn-whatsapp { background: #25d366; color: white; }
+        .btn-share { background: var(--glass); color: var(--text); border: 2px solid var(--primary); }
+        .ai-assistant { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
+        .ai-button { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); border: none; color: white; font-size: 1.6rem; cursor: pointer; box-shadow: 0 5px 25px rgba(102, 126, 234, 0.6); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; touch-action: manipulation; }
+        .ai-button:active { transform: scale(0.9); }
+        .ai-chat { position: absolute; bottom: 75px; right: 0; width: calc(100vw - 40px); max-width: 380px; height: 500px; background: var(--darker); border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); display: none; flex-direction: column; overflow: hidden; border: 1px solid var(--glass); }
+        .ai-chat.active { display: flex; }
+        .ai-header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .ai-header h3 { display: flex; align-items: center; gap: 10px; font-size: 1rem; }
+        .close-ai { background: rgba(255,255,255,0.2); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; touch-action: manipulation; }
+        .ai-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .message { max-width: 85%; padding: 12px 16px; border-radius: 18px; font-size: 0.95rem; line-height: 1.5; word-wrap: break-word; }
+        .message.user { align-self: flex-end; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-bottom-right-radius: 5px; }
+        .message.bot { align-self: flex-start; background: var(--glass); color: var(--text); border-bottom-left-radius: 5px; border: 1px solid rgba(255,255,255,0.1); }
+        .ai-input { padding: 15px; display: flex; gap: 10px; background: rgba(0,0,0,0.3); }
+        .ai-input input { flex: 1; background: var(--glass); border: none; padding: 12px 16px; border-radius: 25px; color: var(--text); font-size: 1rem; }
+        .ai-input input:focus { outline: none; }
+        .ai-input button { background: linear-gradient(135deg, var(--primary), var(--accent)); border: none; color: white; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; touch-action: manipulation; }
+        .cart-modal { position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100vh; background: var(--darker); z-index: 2000; transition: right 0.3s ease; display: flex; flex-direction: column; box-shadow: -5px 0 30px rgba(0,0,0,0.5); }
+        .cart-modal.active { right: 0; }
+        .cart-header { padding: 20px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; justify-content: space-between; align-items: center; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
+        .cart-item { display: flex; gap: 15px; margin-bottom: 15px; padding: 15px; background: var(--glass); border-radius: 15px; }
+        .cart-item-image { width: 70px; height: 70px; background: linear-gradient(45deg, var(--primary), var(--secondary)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; overflow: hidden; flex-shrink: 0; }
+        .cart-item-image img { width: 100%; height: 100%; object-fit: cover; }
+        .cart-item-info { flex: 1; min-width: 0; }
+        .cart-item-info h4 { margin-bottom: 5px; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .cart-item-info p { color: var(--success); font-weight: bold; font-size: 1rem; }
+        .quantity-control { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+        .quantity-control button { background: var(--glass); border: none; color: var(--text); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; touch-action: manipulation; }
+        .cart-footer { padding: 20px; background: rgba(0,0,0,0.3); border-top: 1px solid var(--glass); }
+        .cart-total { display: flex; justify-content: space-between; font-size: 1.2rem; margin-bottom: 15px; font-weight: bold; }
+        .whatsapp-order { width: 100%; padding: 16px; background: linear-gradient(45deg, #25d366, #128c7e); color: white; border: none; border-radius: 30px; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 600; touch-action: manipulation; }
+        .whatsapp-order:active { transform: scale(0.98); }
+        footer { background: rgba(0,0,0,0.4); padding: 40px 20px; text-align: center; margin-top: 50px; }
+        .contact-info { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 30px; max-width: 400px; margin-left: auto; margin-right: auto; }
+        @media (min-width: 640px) { .contact-info { grid-template-columns: repeat(3, 1fr); max-width: 800px; } }
+        .contact-item { background: var(--glass); padding: 25px 20px; border-radius: 20px; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.05); }
+        .contact-item i { font-size: 2rem; margin-bottom: 10px; color: var(--primary); }
+        .contact-item h3 { margin-bottom: 5px; font-size: 1.1rem; }
+        .contact-item p { color: var(--text-muted); font-size: 0.9rem; }
+        .social-links { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
+        .social-links a { width: 50px; height: 50px; background: var(--glass); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text); font-size: 1.3rem; transition: all 0.3s; text-decoration: none; touch-action: manipulation; }
+        .social-links a:active { transform: scale(0.9); background: var(--primary); }
+        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: linear-gradient(45deg, #00b894, #00d9ff); color: white; padding: 14px 28px; border-radius: 50px; display: flex; align-items: center; gap: 10px; opacity: 0; transition: all 0.3s; z-index: 4000; font-weight: 600; font-size: 0.95rem; pointer-events: none; white-space: nowrap; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .search-container { padding: 0 20px 30px; max-width: 600px; margin: 0 auto; }
+        .search-box { position: relative; width: 100%; }
+        .search-box input { width: 100%; padding: 16px 50px 16px 20px; background: var(--glass); border: 2px solid transparent; border-radius: 30px; color: var(--text); font-size: 1rem; }
+        .search-box input:focus { outline: none; border-color: var(--primary); }
+        .search-box button { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: var(--primary); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; touch-action: manipulation; }
+        .typing { display: flex; gap: 6px; padding: 15px 20px; }
+        .typing span { width: 10px; height: 10px; background: var(--text-muted); border-radius: 50%; animation: typing 1.4s infinite ease-in-out both; }
+        .typing span:nth-child(1) { animation-delay: -0.32s; }
+        .typing span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+    </style>
+</head>
+<body>
+    <header>
+        <button onclick="toggleMenu()" style="background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; padding: 8px;">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="logo">
+            <div>
+                <h1>GÖNÜL</h1>
+                <span>EV YEMEKLERİ</span>
+            </div>
+        </div>
+        <div class="header-icons">
+            <button onclick="showFavorites()" title="Favorilerim">
+                <i class="fas fa-heart"></i>
+            </button>
+            <button onclick="toggleCart()" class="cart-btn">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="overlay" onclick="toggleMenu()"></div>
+    <nav class="side-menu" id="sideMenu">
+        <button class="close-menu" onclick="toggleMenu()">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="menu-items">
+            <a href="#" onclick="toggleMenu(); window.scrollTo(0,0); return false;"><i class="fas fa-home"></i> Ana Sayfa</a>
+            <a href="#menu" onclick="toggleMenu()"><i class="fas fa-utensils"></i> Menü</a>
+            <a href="#categories" onclick="toggleMenu()"><i class="fas fa-th-large"></i> Kategoriler</a>
+            <a href="products.html" onclick="toggleMenu()"><i class="fas fa-list"></i> Tüm Ürünler</a>
+            <a href="#contact" onclick="toggleMenu()"><i class="fas fa-phone"></i> İletişim</a>
+            <a href="admin.html" onclick="toggleMenu()"><i class="fas fa-user-shield"></i> Yönetici Girişi</a>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <h2>Ev Yapımı Hatay Lezzetleri</h2>
+        <p>Hatay'ın eşsiz lezzetleri, anneden kalma tariflerle sofralarınıza geliyor.</p>
+        <div class="hero-buttons">
+            <a href="#menu" class="btn btn-primary">
+                <i class="fas fa-utensils"></i> Menüyü Gör
+            </a>
+            <a href="https://wa.me/905528387740" class="btn btn-secondary">
+                <i class="fas fa-phone"></i> Hemen Ara
+            </a>
+        </div>
+    </section>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Ürün ara..." onkeyup="searchProducts()">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+
+    <section class="categories" id="categories">
+        <h2 class="section-title">KATEGORİLER</h2>
+        <div class="category-grid">
+            <div class="category-card" onclick="filterCategory('hatay')">
+                <div class="category-icon">🏺</div>
+                <h3>Hatay Mutfağı</h3>
+            </div>
+            <div class="category-card" onclick="filterCategory('corba')">
+                <div class="category-icon">🍲</div>
+                <h3>Çorbalar</h3>
+            </div>
+            <div class="category-card" onclick="filterCategory('anayemek')">
+                <div class="category-icon">🍖</div>
+                <h3>Ana Yemekler</h3>
+            </div>
+            <div class="category-card" onclick="filterCategory('dolma')">
+                <div class="category-icon">🫑</div>
+                <h3>Dolma & Sarma</h3>
+            </div>
+            <div class="category-card" onclick="filterCategory('tatli')">
+                <div class="category-icon">🍰</div>
+                <h3>Tatlılar</h3>
+            </div>
+            <div class="category-card" onclick="filterCategory('icecek')">
+                <div class="category-icon">🥤</div>
+                <h3>İçecekler</h3>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured" id="menu">
+        <h2 class="section-title">ÖNE ÇIKANLAR</h2>
+        <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <div class="product-modal" id="productModal" onclick="closeProductModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeProductModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-image" id="modalImage"></div>
+            <div class="modal-body">
+                <div class="modal-header">
+                    <div>
+                        <div class="modal-category" id="modalCategory">Kategori</div>
+                        <h2 class="modal-title" id="modalTitle">Ürün Adı</h2>
+                    </div>
+                    <div class="modal-price" id="modalPrice">0 ₺</div>
+                </div>
+                <p class="modal-description" id="modalDescription">Açıklama</p>
+                <div class="quantity-selector">
+                    <span>Adet:</span>
+                    <button class="quantity-btn" onclick="changeModalQuantity(-1)">-</button>
+                    <span class="quantity-value" id="modalQuantity">1</span>
+                    <button class="quantity-btn" onclick="changeModalQuantity(1)">+</button>
+                    <span id="modalStock" style="color: var(--text-muted); font-size: 0.9rem;"></span>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-modal btn-add-cart" onclick="addToCartFromModal()">
+                        <i class="fas fa-shopping-cart"></i> Sepete Ekle
+                    </button>
+                    <button class="btn-modal btn-whatsapp" onclick="orderViaWhatsAppFromModal()">
+                        <i class="fab fa-whatsapp"></i> WhatsApp Sipariş
+                    </button>
+                    <button class="btn-modal btn-share" onclick="shareProduct()">
+                        <i class="fas fa-share-alt"></i> Paylaş
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ai-assistant">
+        <div class="ai-chat" id="aiChat">
+            <div class="ai-header">
+                <h3><i class="fas fa-robot"></i> Gönül AI Asistan</h3>
+                <button class="close-ai" onclick="toggleAI()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="ai-messages" id="aiMessages">
+                <div class="message bot">
+                    Merhaba! Ben Gönül Ev Yemekleri'nin yapay zeka asistanıyım. Size nasıl yardımcı olabilirim?
+                </div>
+            </div>
+            <div class="ai-input">
+                <input type="text" id="aiInput" placeholder="Mesajınızı yazın..." onkeypress="handleAIKeyPress(event)">
+                <button onclick="sendAIMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        <button class="ai-button" onclick="toggleAI()">
+            <i class="fas fa-robot"></i>
+        </button>
+    </div>
+
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> Sepetim</h3>
+            <button onclick="toggleCart()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p style="text-align: center; color: var(--text-muted); margin-top: 50px;">Sepetiniz boş</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Toplam:</span>
+                <span id="cartTotal">0 ₺</span>
+            </div>
+            <button class="whatsapp-order" onclick="orderViaWhatsApp()">
+                <i class="fab fa-whatsapp"></i> WhatsApp'tan Sipariş Ver
+            </button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Sepete eklendi!</span>
+    </div>
+
+    <footer id="contact">
+        <div class="footer-content">
+            <h2 class="section-title">İLETİŞİM</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <h3>Telefon</h3>
+                    <p>0552 838 77 40</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <h3>E-posta</h3>
+                    <p>gonulevyemekleri17@gmail.com</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <h3>WhatsApp</h3>
+                    <p>+90 552 838 77 40</p>
+                </div>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="https://wa.me/905528387740"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 20px;">© 2024 Gönül Ev Yemekleri. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <script>
+        let products = JSON.parse(localStorage.getItem('products')) || [
+            { id: 1, name: "İçli Köfte", category: "hatay", price: 60, oldPrice: null, description: "Hatay usulü bol bol cevizli içli köfte. El yapımı, günlük taze. 1 adet.", emoji: "🥟", image: null, stock: 20 },
+            { id: 2, name: "Kısır", category: "hatay", price: 45, oldPrice: 50, description: "Antakya usulü nar ekşili, bol yeşillikli kısır. 500 gr.", emoji: "🥗", image: null, stock: 15 },
+            { id: 3, name: "Humus", category: "hatay", price: 50, oldPrice: null, description: "Tahinli, zeytinyağlı ev yapımı humus. 400 gr.", emoji: "🥙", image: null, stock: 10 },
+            { id: 4, name: "Muhammara", category: "hatay", price: 55, oldPrice: null, description: "Cevizli, biberli Antakya muhammarası. 400 gr.", emoji: "🌶️", image: null, stock: 8 },
+            { id: 5, name: "Mercimek Köftesi", category: "hatay", price: 40, oldPrice: 45, description: "Ev yapımı mercimek köftesi. 500 gr.", emoji: "🧆", image: null, stock: 25 },
+            { id: 6, name: "Yaprak Sarma", category: "dolma", price: 70, oldPrice: null, description: "Zeytinyağlı yaprak sarma. 1 kg.", emoji: "🍃", image: null, stock: 5 },
+            { id: 7, name: "Biber Dolması", category: "dolma", price: 80, oldPrice: 90, description: "Etli biber dolması. 6 adet.", emoji: "🫑", image: null, stock: 0 },
+            { id: 8, name: "Kabak Tatlısı", category: "tatli", price: 65, oldPrice: null, description: "Tahinli, cevizli kabak tatlısı. 500 gr.", emoji: "🎃", image: null, stock: 12 },
+            { id: 9, name: "Şöbiyet", category: "tatli", price: 25, oldPrice: null, description: "Ev yapımı şöbiyet. 1 adet.", emoji: "🥮", image: null, stock: 30 },
+            { id: 10, name: "Ezogelin Çorbası", category: "corba", price: 35, oldPrice: null, description: "Ev yapımı ezogelin çorbası. 1 litre.", emoji: "🍲", image: null, stock: 18 },
+            { id: 11, name: "Tarator", category: "hatay", price: 40, oldPrice: null, description: "Cevizli, yoğurtlu tarator. 400 gr.", emoji: "🥣", image: null, stock: 14 },
+            { id: 12, name: "Haydari", category: "hatay", price: 35, oldPrice: null, description: "Sarımsaklı, naneli haydari. 300 gr.", emoji: "🧀", image: null, stock: 20 }
+        ];
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        let currentModalProduct = null;
+        let modalQuantity = 1;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts();
+            updateCartCount();
+        });
+
+        function toggleMenu() {
+            document.getElementById('sideMenu').classList.toggle('active');
+            document.querySelector('.overlay').classList.toggle('active');
+        }
+
+        function toggleCart() {
+            document.getElementById('cartModal').classList.toggle('active');
+            renderCart();
+        }
+
+        function toggleAI() {
+            var chat = document.getElementById('aiChat');
+            if (chat.classList.contains('active')) {
+                chat.classList.remove('active');
+            } else {
+                chat.classList.add('active');
+                document.getElementById('aiInput').focus();
+            }
+        }
+
+        function renderProducts(filter) {
+            var grid = document.getElementById('productGrid');
+            var filtered = filter ? products.filter(function(p) { return p.category === filter || p.name.toLowerCase().includes(filter.toLowerCase()); }) : products;
+            
+            grid.innerHTML = filtered.map(function(product) {
+                var isFavorite = favorites.includes(product.id);
+                var isLowStock = product.stock > 0 && product.stock <= 5;
+                var isOutOfStock = product.stock === 0;
+                
+                return '<div class="product-card" data-category="' + product.category + '">' +
+                    '<div class="product-image" onclick="openProductModal(' + product.id + ')">' +
+                        (product.image ? '<img src="' + product.image + '" alt="' + product.name + '">' : product.emoji) +
+                        (product.oldPrice ? '<span class="discount-badge">İNDİRİM</span>' : '') +
+                        '<button class="favorite-btn ' + (isFavorite ? 'active' : '') + '" onclick="toggleFavorite(event, ' + product.id + ')">' +
+                            '<i class="' + (isFavorite ? 'fas' : 'far') + ' fa-heart"></i>' +
+                        '</button>' +
+                        (!isOutOfStock ? '<span class="stock-badge ' + (isLowStock ? 'low' : '') + '">' + (isLowStock ? 'Son ' + product.stock + ' adet' : 'Stokta var') + '</span>' : '<span class="stock-badge low">Tükendi</span>') +
+                    '</div>' +
+                    '<div class="product-info">' +
+                        '<h3 onclick="openProductModal(' + product.id + ')">' + product.name + '</h3>' +
+                        '<p>' + product.description.substring(0, 60) + '...</p>' +
+                        '<div class="product-footer">' +
+                            '<div class="price-container">' +
+                                (product.oldPrice ? '<span class="old-price">' + product.oldPrice + ' ₺</span>' : '') +
+                                '<span class="price">' + product.price + ' ₺</span>' +
+                            '</div>' +
+                            '<button class="add-to-cart" onclick="addToCart(' + product.id + ')" ' + (isOutOfStock ? 'disabled' : '') + '>' +
+                                '<i class="fas ' + (isOutOfStock ? 'fa-times' : 'fa-plus') + '"></i>' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function filterCategory(category) {
+            renderProducts(category);
+            document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function searchProducts() {
+            var query = document.getElementById('searchInput').value;
+            renderProducts(query);
+        }
+
+        function toggleFavorite(event, productId) {
+            event.stopPropagation();
+            var index = favorites.indexOf(productId);
+            
+            if (index > -1) {
+                favorites.splice(index, 1);
+                showToast('Favorilerden çıkarıldı');
+            } else {
+                favorites.push(productId);
+                showToast('Favorilere eklendi');
+            }
+            
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            renderProducts();
+        }
+
+        function showFavorites() {
+            var favoriteProducts = products.filter(function(p) { return favorites.includes(p.id); });
+            var grid = document.getElementById('productGrid');
+            
+            if (favoriteProducts.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; color: var(--text-muted); grid-column: 1/-1; padding: 40px;">Henüz favori ürününüz yok.</p>';
+            } else {
+                renderProducts('favorites');
+            }
+            
+            document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openProductModal(productId) {
+            var product = products.find(function(p) { return p.id === productId; });
+            if (!product) return;
+            
+            currentModalProduct = product;
+            modalQuantity = 1;
+            
+            document.getElementById('modalImage').innerHTML = product.image ? '<img src="' + product.image + '" alt="' + product.name + '">' : product.emoji;
+            document.getElementById('modalCategory').textContent = getCategoryName(product.category);
+            document.getElementById('modalTitle').textContent = product.name;
+            document.getElementById('modalPrice').textContent = product.price + ' ₺';
+            document.getElementById('modalDescription').textContent = product.description;
+            document.getElementById('modalQuantity').textContent = modalQuantity;
+            document.getElementById('modalStock').textContent = product.stock > 0 ? '(Stok: ' + product.stock + ' adet)' : '(Tükendi)';
+            
+            document.getElementById('productModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductModal(event) {
+            if (!event || event.target.id === 'productModal' || event.target.closest('.modal-close')) {
+                document.getElementById('productModal').classList.remove('active');
+                document.body.style.overflow = '';
+                currentModalProduct = null;
+            }
+        }
+
+        function changeModalQuantity(change) {
+            var newQuantity = modalQuantity + change;
+            if (newQuantity >= 1 && newQuantity <= (currentModalProduct ? currentModalProduct.stock : 1)) {
+                modalQuantity = newQuantity;
+                document.getElementById('modalQuantity').textContent = modalQuantity;
+            }
+        }
+
+        function addToCart(productId, showNotification) {
+            if (showNotification === undefined) showNotification = true;
+            var product = products.find(function(p) { return p.id === productId; });
+            if (product.stock === 0) return;
+            
+            var existingItem = cart.find(function(item) { return item.id === productId; });
+            
+            if (existingItem) {
+                if (existingItem.quantity < product.stock) {
+                    existingItem.quantity++;
+                } else {
+                    showToast('Stok limitine ulaşıldı');
+                    return;
+                }
+            } else {
+                cart.push(Object.assign({}, product, {quantity: 1}));
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            
+            if (showNotification) {
+                showToast('Sepete eklendi!');
+            }
+        }
+
+        function addToCartFromModal() {
+            if (!currentModalProduct) return;
+            
+            for (var i = 0; i < modalQuantity; i++) {
+                addToCart(currentModalProduct.id, false);
+            }
+            
+            showToast(modalQuantity + ' adet ' + currentModalProduct.name + ' sepete eklendi');
+            closeProductModal();
+        }
+
+        function updateCartCount() {
+            var count = cart.reduce(function(sum, item) { return sum + item.quantity; }, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        function renderCart() {
+            var container = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); margin-top: 50px;"><i class="fas fa-shopping-basket" style="font-size: 3rem; display: block; margin-bottom: 15px; opacity: 0.5;"></i>Sepetiniz boş</p>';
+                document.getElementById('cartTotal').textContent = '0 ₺';
+                return;
+            }
+            
+            container.innerHTML = cart.map(function(item) {
+                return '<div class="cart-item">' +
+                    '<div class="cart-item-image">' + (item.image ? '<img src="' + item.image + '" alt="' + item.name + '">' : item.emoji) + '</div>' +
+                    '<div class="cart-item-info">' +
+                        '<h4>' + item.name + '</h4>' +
+                        '<p>' + item.price + ' ₺</p>' +
+                        '<div class="quantity-control">' +
+                            '<button onclick="updateQuantity(' + item.id + ', -1)">-</button>' +
+                            '<span>' + item.quantity + '</span>' +
+                            '<button onclick="updateQuantity(' + item.id + ', 1)">+</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+            
+            var total = cart.reduce(function(sum, item) { return sum + (item.price * item.quantity); }, 0);
+            document.getElementById('cartTotal').textContent = total.toLocaleString('tr-TR') + ' ₺';
+        }
+
+        function updateQuantity(productId, change) {
+            var item = cart.find(function(i) { return i.id === productId; });
+            var product = products.find(function(p) { return p.id === productId; });
+            
+            if (item) {
+                var newQuantity = item.quantity + change;
+                if (newQuantity <= 0) {
+                    cart = cart.filter(function(i) { return i.id !== productId; });
+                } else if (newQuantity <= product.stock) {
+                    item.quantity = newQuantity;
+                } else {
+                    showToast('Stok limitine ulaşıldı');
+                    return;
+                }
+                
+                localStorage.setItem('cart', JSON.stringify(cart));
+                renderCart();
+                updateCartCount();
+            }
+        }
+
+        function orderViaWhatsApp() {
+            if (cart.length === 0) {
+                showToast('Sepetiniz boş!');
+                return;
+            }
+            
+            var message = 'Merhaba Gönül Ev Yemekleri,%0A%0ASipariş vermek istiyorum:%0A%0A';
+            var total = 0;
+            
+            cart.forEach(function(item) {
+                message += '• ' + item.name + ' x' + item.quantity + ' - ' + (item.price * item.quantity).toLocaleString('tr-TR') + ' ₺%0A';
+                total += item.price * item.quantity;
+            });
+            
+            message += '%0AToplam: ' + total.toLocaleString('tr-TR') + ' ₺%0A%0ATeşekkürler!';
+            
+            window.open('https://wa.me/905528387740?text=' + message, '_blank');
+        }
+
+        function orderViaWhatsAppFromModal() {
+            if (!currentModalProduct) return;
+            var message = 'Merhaba, ' + currentModalProduct.name + ' ürününden ' + modalQuantity + ' adet sipariş vermek istiyorum.';
+            window.open('https://wa.me/905528387740?text=' + encodeURIComponent(message), '_blank');
+        }
+
+        function shareProduct() {
+            if (!currentModalProduct) return;
+            var text = currentModalProduct.name + ' - ' + currentModalProduct.price + '₺ - ' + currentModalProduct.description;
+            if (navigator.share) {
+                navigator.share({title: currentModalProduct.name, text: text, url: window.location.href});
+            } else {
+                window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+            }
+        }
+
+        function getCategoryName(cat) {
+            var names = {hatay: 'Hatay Mutfağı', corba: 'Çorbalar', anayemek: 'Ana Yemekler', dolma: 'Dolma & Sarma', tatli: 'Tatlılar', icecek: 'İçecekler'};
+            return names[cat] || cat;
+        }
+
+        function showToast(message) {
+            var toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        function handleAIKeyPress(e) {
+            if (e.key === 'Enter') sendAIMessage();
+        }
+
+        function sendAIMessage() {
+            var input = document.getElementById('aiInput');
+            var message = input.value.trim();
+            if (!message) return;
+            
+            var messagesDiv = document.getElementById('aiMessages');
+            
+            messagesDiv.innerHTML += '<div class="message user">' + message + '</div>';
+            input.value = '';
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            
+            var typingId = 'typing-' + Date.now();
+            messagesDiv.innerHTML += '<div class="message bot typing" id="' + typingId + '"><span></span><span></span><span></span></div>';
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            
+            setTimeout(function() {
+                var el = document.getElementById(typingId);
+                if (el) el.remove();
+                var response = generateAIResponse(message);
+                messagesDiv.innerHTML += '<div class="message bot">' + response + '</div>';
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 1500);
+        }
+
+        function generateAIResponse(message) {
+            var lower = message.toLowerCase();
+            if (lower.includes('fiyat') || lower.includes('ücret') || lower.includes('kaç para')) return 'Ürünlerimizin fiyatları 25 ₺ ile 90 ₺ arasında değişmektedir. En popüler ürünümüz İçli Köfte 60 ₺, Kısır 45 ₺. İndirimli ürünlerimizi kaçırmayın!';
+            if (lower.includes('sipariş') || lower.includes('nasıl alırım')) return 'Sipariş vermek çok kolay! Beğendiğiniz ürünleri sepete ekleyip "WhatsApp\'tan Sipariş Ver" butonuna tıklayabilirsiniz. Veya 0552 838 77 40 numaralı telefondan bize ulaşabilirsiniz.';
+            if (lower.includes('içli köfte') || lower.includes('içli')) return 'İçli Köftemiz Hatay\'ın meşhur lezzetlerindendir! Bol cevizli, baharatlı iç harcıyla hazırlanıyor. Adet fiyatı 60 ₺. Günlük taze olarak hazırlanıyor.';
+            if (lower.includes('stok') || lower.includes('var mı')) return 'Stok durumumuz günlük olarak güncellenmektedir. Ürün kartlarında "Stokta var", "Son X adet" veya "Tükendi" bilgisini görebilirsiniz.';
+            if (lower.includes('favori') || lower.includes('beğen')) return 'Beğendiğiniz ürünleri kalp ikonuna tıklayarak favorilerinize ekleyebilirsiniz. Favorilerinizi sağ üstteki kalp butonundan görüntüleyebilirsiniz.';
+            if (lower.includes('indirim') || lower.includes('kampanya')) return 'Şu an birçok ürünümüzde indirim var! Kısır, Mercimek Köftesi ve Biber Dolması\'nda özel fiyatlar mevcut.';
+            if (lower.includes('merhaba') || lower.includes('selam')) return 'Merhaba! Gönül Ev Yemekleri\'ne hoş geldiniz. Size nasıl yardımcı olabilirim?';
+            if (lower.includes('teşekkür') || lower.includes('sağol')) return 'Rica ederim! Başka bir konuda yardımcı olabilirsem buradayım. Afiyet olsun! 🍽️';
+            return 'Anladım! Daha detaylı bilgi için menümüze göz atabilir veya 0552 838 77 40 numaralı telefondan bize ulaşabilirsiniz.';
+        }
+
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'products') {
+                products = JSON.parse(e.newValue);
+                renderProducts();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeProductModal();
+                if (document.getElementById('aiChat').classList.contains('active')) toggleAI();
+                if (document.getElementById('cartModal').classList.contains('active')) toggleCart();
+                if (document.getElementById('sideMenu').classList.contains('active')) toggleMenu();
+            }
+        });
+    </script>
+</body>
+</html>
